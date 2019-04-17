@@ -26,6 +26,7 @@ swordATK = 5
 
 doesItAttack = randint(1,5)
 doIAttack = randint(1,5)
+attackdelay = 1
 
 
 ############################
@@ -42,11 +43,54 @@ class enemy:
         self.defence = defence
         self.biome = biome
         self.tick_speed = tick_speed
+
+
+###############
+
+    def damager(self):
+        global PlayerHealth,doesItAttack,attackdelay
+
+       
+
+        if attackdelay != 0:
+            attackdelay -= 1
+
+
+        
+            
+        
+        elif 2 < doesItAttack and PlayerHealth > 0 and attackdelay == 0:
+            PlayerHealth = PlayerHealth - self.attack
+            player_health['text'] = "Health: " + str(PlayerHealth)
+            doesItAttack = randint(1,5)
+            if PlayerHealth <= 0:
+                PlayerHealth = 0
+                player_health['text'] = "Health: " + str(PlayerHealth)
+
+            else:
+                pass
+                
+
+
+        else:
+            doesItAttack = randint(1,5)
+
+
+
+
+
+
+
          
+
+
+
+
+
 ###############
 
 
-    def animate(self):
+    def tick(self):
         global last_refresh, ui_refreshes, last_refresh, ui_delta
         tick_speed_SEC = self.tick_speed/1000
 
@@ -73,7 +117,7 @@ class enemy:
         ##            ('%.6f' % refresh_error),
         ##            ('%.4f' % round(ui_refresh, 4)),
         ##            int(1000*round(ui_refresh, 4)))
-        hw()
+        self.damager()
 
         # set perfect UI_REFRESH timing
         pause = int(1000 *
@@ -81,43 +125,17 @@ class enemy:
                         max(0, (
                             2 * tick_speed_SEC - ui_refresh + ui_delta)))))
 
-        window.after(pause, self.animate)
+        window.after(pause, self.tick)
+        
 
         
 
-    def damager(self):
-        global PlayerHealth,doesItAttack
-        if 2 < doesItAttack:
-            PlayerHealth = PlayerHealth - self.attack
-            doesItAttack = randint(1,5)
-            player_health['text'] = str(PlayerHealth)
-            print(doesItAttack)
-            print(str(PlayerHealth))
-
-
-        else:
-            print(doesItAttack)
-            doesItAttack = randint(1,5)
-
+ 
         
             
 
 ###############
    
-
-def hw():
-    number = randint(0,5)
-    comparer =randint(0,5)
-    print (comparer,number)
-    if comparer == number:
-        print('they are equal')
-        number = randint(0,5)
-        comparer =randint(0,5)
-
-    else:
-        print("they are'nt")
-        number = randint(0,5)
-        comparer =randint(0,5)
     
 
 
@@ -134,9 +152,43 @@ class weapons:
         self.AtkSpeed = AtkSpeed
         self.Damage = Damage
 
-    def tick(self):
-        threading.Timer(AtkSpeed,Atk).start()
-        Atk
+    def weapontick(self):
+        global last_refresh, ui_refreshes, last_refresh, ui_delta
+        tick_speed_SEC = self.tick_speed/1000
+
+          
+        # keep moving average of UI_REFRESH timing
+        now = time.time()
+        ui_refreshes.append(now - last_refresh)
+        ui_refreshes = ui_refreshes[-UI_DEPTH:]
+        ui_refresh = sum(ui_refreshes) / len(ui_refreshes)
+        last_refresh = now
+
+        # filter nanosecond scale timing oddities iteratively
+        # both as they arise due to load and between various systems
+        refresh_error = abs(tick_speed_SEC-ui_refresh)
+        if float('%.5f' % ui_refresh) < (tick_speed_SEC):
+            ui_delta += UI_DELTA
+        if float('%.5f' % ui_refresh) > (tick_speed_SEC):
+            ui_delta -= UI_DELTA
+
+        # do whatever your loop does
+        # note this must take less time than your refresh rate!!
+        ##    print(  int(time.time()),
+        ##            ('%.6f' % ui_refresh),
+        ##            ('%.6f' % refresh_error),
+        ##            ('%.4f' % round(ui_refresh, 4)),
+        ##            int(1000*round(ui_refresh, 4)))
+        self.Atk()
+
+        # set perfect UI_REFRESH timing
+        pause = int(1000 *
+                    min(tick_speed_SEC, (
+                        max(0, (
+                            2 * tick_speed_SEC - ui_refresh + ui_delta)))))
+
+        window.after(pause, self.tick)
+        
 
     def Atk(self):
         pass
@@ -147,26 +199,27 @@ class weapons:
             
     
                 
-player_health = Label(window,text = str(PlayerHealth),fg = "white",bg = "black")
+player_health = Label(window,text = "Health: " + str(PlayerHealth),fg = "white",bg = "black")
+gameover = Label(window, text= "GAME OVER",fg = "white", bg = "Black", font = " Times 28")
+ 
 player_health.place(relx = 0.05, rely = 0.1)
 
 
 
-ent = enemy("Ent",20,60,5,300,1)
+ent = enemy("Ent",19,60,5,300,1)
 
 creature = ent
 
-creature.animate()
+ent.tick()
+
+
+
+   
 
 
 
 
-
-
-
-
-
-window.after(0, animate)            
+            
 mainloop()
 
 
