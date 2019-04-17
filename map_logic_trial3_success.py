@@ -1,4 +1,5 @@
 from tkinter import *
+from random import *
 window = Tk()
 
 #variable is stored in the root object
