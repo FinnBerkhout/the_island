@@ -1,10 +1,8 @@
 from tkinter import *
-from random import *
-from time import *
 #######################################
 window = Tk()
 window.title("The Island")
-window.configure(bg = "black")
+window.configure(bg="black")
 width = window.winfo_screenwidth() 
 height = window.winfo_screenheight()
 window.geometry('%sx%s' % (width, height))
@@ -39,8 +37,10 @@ ButtonFText = StringVar()
 
 place_counter = 1
 #######################################
+
+
 def opa():
-    global TEXT,place_counter,AXE,PICKAXE,SWORD
+    global TEXT, place_counter, AXE, PICKAXE, SWORD
     if place_counter == 1:
         TEXT.set("As you run away from the sound you look behind to catch a glimpse of what happened while you're doing it you run into a wall,but its not a wall its a door. The door opens and light seeps through illuminating the room you're in. you look behind you just in time to see a small mouse go through a crack in the wall you see what the mouse knocked over… its a book.")
         place_counter = 2
@@ -60,21 +60,14 @@ def opa():
         ButtonBText.set(Op_B + 'look more closly at this area')
         ButtonCText.set(Op_C + 'search a different part of the house')
 
-
-        
     elif place_counter == 4:
         pass
-
 
     elif place_counter == 5:
         pass
 
-
-
     elif place_counter == 6:
         pass
-
-
 
     elif place_counter == 7:
         pass
@@ -82,14 +75,13 @@ def opa():
     else:
         pass
 
-
     if free_mode == 1:
         pass
 
 
 ##                 
 def opb():
-    global TEXT,place_counter,AXE,PICKAXE,SWORD
+    global TEXT, place_counter, AXE, PICKAXE, SWORD
     if place_counter == 1:
         TEXT.set("While you stumble towards the object you trip over a pile of wood falling flat of your face… there’s a gust of wind and and a door creaks open. You stand up wondering what made that noise. As light floods the room exposing the contents, you see what made the noise, a book.")
         place_counter = 3
@@ -117,13 +109,10 @@ def opb():
     elif place_counter == 5:
         pass
 
-
     elif place_counter == 6:
         pass
 
-
     elif place_counter == 7:
-        global free_mode
         pass
         
 ##
@@ -319,10 +308,6 @@ intructions = Label(window, text= "The Island is a survival game that requires y
 
 title.grid(padx = 510,pady = 15)
 start.grid(padx = 500,pady = 1)
-intructions.grid(padx = 510,pady = 15)
-
-
-
-
+intructions.grid(padx=510,pady = 15)
 
 window.mainloop()
